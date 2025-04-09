@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image - OCR App</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .content {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            color: #333;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInDown 0.8s forwards;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -10px;
+            left: 0;
+            background-color: #007bff;
+            animation: underlineExpand 0.8s 0.5s forwards;
+        }
+
+        @keyframes underlineExpand {
+            0% { width: 0; left: 50%; }
+            100% { width: 100%; left: 0; }
+        }
+
+        @keyframes fadeInDown {
+            0% { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form styling */
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: scaleIn 0.6s 0.4s forwards;
+        }
+
+        @keyframes scaleIn {
+            0% { 
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .file-input-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            border-color: #007bff;
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        .file-input-label i {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .file-input-label span {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        #file {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Action link styling */
+        .action-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.8s 0.8s forwards;
+        }
+
+        .action-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .action-link:hover::after {
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Footer styles */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.8s 1s forwards;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+        /* Preview styling */
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="content">
+        <h2>Upload Image for OCR</h2>
+        
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <div class="file-input-container">
+                <label class="file-input-label" for="file">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click to browse or drag & drop your image</span>
+                </label>
+                <input type="file" name="file" id="file" accept="image/*" required>
+            </div>
+            
+            <img id="imagePreview" class="image-preview" alt="Image preview">
+            
+            <input type="submit" value="Process Image">
+        </form>
+
+        <a href="/logout" class="action-link">Logout</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 github/hussainbutt. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Image preview functionality
+        const fileInput = document.getElementById('file');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.style.display = 'block';
+                    imagePreview.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission animation
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('input[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.value = 'Processing...';
+            submitBtn.style.backgroundColor = '#28a745';
+        });
+    </script>
+</body>
+</html>

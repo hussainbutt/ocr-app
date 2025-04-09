@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to OCR App</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Animation for h1 */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Link button styles */
+        .btn {
+            text-decoration: none;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+        }
+
+        /* Button 1 - Login */
+        .btn-login {
+            background-color: #007bff;
+        }
+
+        .btn-login:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+
+        /* Button 2 - Register */
+        .btn-register {
+            background-color: #28a745;
+        }
+
+        .btn-register:hover {
+            background-color: #218838;
+            transform: translateY(-5px);
+        }
+
+        /* Animation for buttons */
+        @keyframes fadeInButton {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Add animation delay for buttons */
+        .btn-login {
+            animation-delay: 1s;
+        }
+
+        .btn-register {
+            animation-delay: 1.2s;
+        }
+
+        /* Footer styles */
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Welcome to OCR App</h1>
+    <div>
+        <a href="/login" class="btn btn-login">Login</a>
+        <a href="/register" class="btn btn-register">Register</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 github/hussainbutt All rights reserved.</p>
+    </footer>
+</body>
+</html>
