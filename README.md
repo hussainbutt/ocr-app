@@ -1,5 +1,6 @@
 # OCR App (Flask-based)
 
+Note: This project was a part of AWS EC2 implementation practice.
 A basic OCR (Optical Character Recognition) web application built using **Flask** and the **Tesseract OCR** package. The app allows users to log in, sign up, upload an image, and receive the extracted text from the image.
 
 ## Features
